@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Save, Plus, X } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 export function AdminPanel() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export function AdminPanel() {
   });
   const [ticketTiers, setTicketTiers] = useState([
     { id: crypto.randomUUID(), name: "General Admission", price: 0, quantity: 100 }
-  ]);
+      const res = await apiFetch("/api/events", {
 
   const addTicketTier = () => {
     setTicketTiers([...ticketTiers, { id: crypto.randomUUID(), name: "VIP Pass", price: 0, quantity: 50 }]);

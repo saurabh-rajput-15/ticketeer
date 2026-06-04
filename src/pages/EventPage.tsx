@@ -5,27 +5,27 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
+import { apiFetch } from "@/lib/api";
+
 export function EventPage() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/events")
+    apiFetch('/api/events')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setEvents(data);
-        } else {
-          console.error("Failed to load events:", data);
+        if (Array.isArray(data)) setEvents(data);
+        else {
+          console.error('Failed to load events:', data);
           setEvents([]);
         }
-        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
         setEvents([]);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="p-8 text-center text-slate-500">Loading events...</div>;

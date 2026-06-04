@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { EventType, RegistrationType } from "@/types";
 import { Users, FileSpreadsheet, PlusCircle, LogOut, Send, UserPlus } from "lucide-react";
 import { toast } from "sonner";
+import { apiFetch } from "@/lib/api";
 
 export function OrganizerDashboard() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export function OrganizerDashboard() {
        return;
     }
 
-    fetch(`/api/events?accountId=${acc.id}`)
+    apiFetch(`/api/events?accountId=${acc.id}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -45,7 +46,7 @@ export function OrganizerDashboard() {
 
   useEffect(() => {
     if (!selectedEventId) return;
-    fetch(`/api/organizer/registrations/${selectedEventId}`)
+    apiFetch(`/api/organizer/registrations/${selectedEventId}`)
       .then(res => res.json())
       .then(data => Array.isArray(data) ? setRegistrations(data) : setRegistrations([]))
       .catch(() => setRegistrations([]));
@@ -55,7 +56,7 @@ export function OrganizerDashboard() {
 
   const loadTeam = () => {
     if (!selectedEventId) return;
-    fetch(`/api/events/${selectedEventId}/users`)
+    apiFetch(`/api/events/${selectedEventId}/users`)
       .then(res => res.json())
       .then(data => setTeamMembers(data));
   };
@@ -63,7 +64,7 @@ export function OrganizerDashboard() {
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-       const res = await fetch(`/api/events/${selectedEventId}/users`, {
+       const res = await apiFetch(`/api/events/${selectedEventId}/users`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(newUser)
@@ -82,7 +83,7 @@ export function OrganizerDashboard() {
     e.preventDefault();
     if (!broadcastMessage) return;
     try {
-      const res = await fetch(`/api/events/${selectedEventId}/broadcast`, {
+      const res = await apiFetch(`/api/events/${selectedEventId}/broadcast`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({ message: broadcastMessage })

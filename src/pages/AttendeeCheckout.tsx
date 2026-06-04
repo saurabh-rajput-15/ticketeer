@@ -27,7 +27,7 @@ export function AttendeeCheckout() {
   });
 
   useEffect(() => {
-    fetch(`/api/events/${eventId}`)
+      apiFetch(`/api/events/${eventId}`)
       .then(res => res.json())
       .then(data => {
         setEvent(data);

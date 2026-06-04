@@ -3,6 +3,7 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import { CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { RegistrationType } from "@/types";
+import { apiFetch } from "@/lib/api";
 
 export function VolunteerScanner() {
   const [scanResult, setScanResult] = useState<string | null>(null);
@@ -19,7 +20,7 @@ export function VolunteerScanner() {
        const acc = JSON.parse(accStr);
        setAccount(acc);
        if (acc.eventId) {
-         fetch(`/api/organizer/registrations/${acc.eventId}`)
+         apiFetch(`/api/organizer/registrations/${acc.eventId}`)
            .then(res => res.json())
            .then(data => {
              if (Array.isArray(data)) setRegistrations(data);
@@ -46,7 +47,7 @@ export function VolunteerScanner() {
                  
                  // Process QR code with backend
                  try {
-                     const res = await fetch("/api/volunteer/checkin", {
+                   const res = await apiFetch("/api/volunteer/checkin", {
                          method: "POST",
                          headers: { "Content-Type": "application/json" },
                          body: JSON.stringify({ qrData: decodedText })
@@ -60,7 +61,7 @@ export function VolunteerScanner() {
                          toast.success("Check-in verified!");
                          // Refresh attendee list without full reload
                          if (account && account.eventId) {
-                             fetch(`/api/organizer/registrations/${account.eventId}`)
+                             apiFetch(`/api/organizer/registrations/${account.eventId}`)
                                .then(r => r.json())
                                .then(d => { if (Array.isArray(d)) setRegistrations(d); });
                          }

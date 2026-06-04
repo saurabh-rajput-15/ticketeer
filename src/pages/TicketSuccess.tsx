@@ -5,6 +5,7 @@ import { jsPDF } from "jspdf";
 import { RegistrationType } from "@/types";
 import { DownloadIcon, MapPin, Calendar } from "lucide-react";
 import { toast } from "sonner";
+import { apiFetch } from "@/lib/api";
 
 export function TicketSuccess() {
   const { regId } = useParams();
@@ -13,7 +14,7 @@ export function TicketSuccess() {
   const ticketRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`/api/registrations/${regId}`)
+    apiFetch(`/api/registrations/${regId}`)
       .then(res => res.json())
       .then(async (data: RegistrationType) => {
         setReg(data);
