@@ -5,6 +5,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { AttendeeCheckout } from "./pages/AttendeeCheckout";
 import { EventPage } from "./pages/EventPage";
@@ -16,7 +17,7 @@ import { AdminLogin } from "./pages/AdminLogin";
 import { AdminRegister } from "./pages/AdminRegister";
 
 // A simple protected route wrapper
-function AdminRoute({ children }: { children: JSX.Element }) {
+function AdminRoute({ children }: { children: ReactNode }) {
   const isAuthenticated = localStorage.getItem("adminToken") === "authenticated";
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
